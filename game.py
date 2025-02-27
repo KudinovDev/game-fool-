@@ -37,39 +37,55 @@ class Deck:
     return self.__deck
 
   @classmethod
-  def _generation_deck(cls):
-    deck = [Card(suit, rank) for suit in Card.get_suits() for rank in Card.get_ranks()]
-    return cls(deck=deck)
-    
-  def __len__(self):
-    return len(self.__deck)
-    
+  def generation_deck(cls):
+    __deck = [Card(suit, rank) for suit in Card.get_suits() for rank in Card.get_ranks()]
+    return cls(deck=__deck)
+
+  def card_shuffling(self):
+    random.shuffle(self.__deck)
+
+  def post_first_card(self):
+    return self.__deck[:6]
+  
+  def get_trump_card(self):
+    return random.choice(self.__deck)
+
   def __iter__(self):  
     return self 
   
   def __getitem__(self, index):
-    return self.__deck[index]  # Доступ к элементу по индексу
-    
-  def __setitem__(self, index, value):
-    self.__deck[index] = value  # Изменение элемента
-    
+    return self.__deck[index]
+
+  def __delitem__(self, index):
+    del self.__deck[index]
+
   def __len__(self):
-    return len(self.__deck)  # Возвращаем длину списка
-    
+    return len(self.__deck)
+
   def __repr__(self):
-    return f"List({self.__deck})"
+    return f"CardList({self.__deck})"
 
 
-class PersonalisedDeck:
-    def __init__(self):
-        pass
+d = Deck.generation_deck()
+d.card_shuffling()
 
 
 class Player:
-    def __init__(self):
-        pass
+  def __init__(self, name: str):
+    self.name = name
+    self.__hands = []
+
+  def get_firs_card(self):
+    self.__hands.extend(d.post_first_card())
+    del d[:6]
+
+  def __repr__(self):
+    return f'игрок: {self.name}'
+
+
+p = Player('Илья')
 
 
 class Game:
-    def __init__(self):
-        pass
+  def __init__(self):
+    pass
